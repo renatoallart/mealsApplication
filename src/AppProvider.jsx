@@ -18,6 +18,9 @@ export function AppProvider({ children }) {
   const [meals, setMeals] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
+  function searchMealByName(name){
+    meals.filter(meal => meal.strMeal === name)
+  }
 
 
   async function fetchMeals(url) {

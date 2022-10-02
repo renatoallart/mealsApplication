@@ -6,8 +6,8 @@ import { Modal } from "./components/Modal";
 export function App() {
   return (
     <main>
-      {/* <Search/>
-      <Favorites/> */}
+      <Search/>
+      {/* <Favorites/> */}
       <Meals/>
       {/* <Modal/> */}
     </main>

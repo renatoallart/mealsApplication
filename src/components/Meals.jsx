@@ -3,7 +3,7 @@ import { BsHandThumbsUp } from 'react-icons/bs'
 
 export function Meals() {
 
-  const { meals, isLoading, selectMeal } = useGlobalContext()
+  const { meals, isLoading, selectMeal, addToFavorites } = useGlobalContext()
 
 
   if (isLoading) {
@@ -29,7 +29,7 @@ export function Meals() {
           <img onClick={() => selectMeal(idMeal)} src={image} className='img' alt="" />
           <footer>
             <h5>{title}</h5>
-            <button className='like-btn'> <BsHandThumbsUp /></button>
+            <button onClick={() => addToFavorites(idMeal)} className='like-btn'> <BsHandThumbsUp /></button>
           </footer>
 
         </article>

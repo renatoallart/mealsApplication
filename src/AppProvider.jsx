@@ -10,6 +10,14 @@ export const MealsProvider = createContext()
 const allMealsURL = 'https://themealdb.com/api/json/v1/1/search.php?s='
 const randomMealURL = 'https://themealdb.com/api/json/v1/1/random.php'
 
+function getFavoritesFromLocalStorage(){
+  let favorites = localStorage.getItem('favorites')
+  if(!favorites) return favorites = []
+  return favorites = JSON.parse(localStorage.getItem('favorites'))
+  
+    
+}
+
 export function useGlobalContext() {
   return useContext(MealsProvider)
 }
@@ -20,18 +28,38 @@ export function AppProvider({ children }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [selectedMealID, setSelectedMealID] = useState(null)
+  const [favorites, setFavorites] = useState(()=> getFavoritesFromLocalStorage())
 
-
-  function selectMeal(mealId, favoriteMeal){
-    console.log('clicked')
-    
-    setSelectedMealID(meals.find(meal => meal.idMeal === mealId))
-    setShowModal(true)
   
-    
+
+
+
+
+  function addToFavorites(idMeal) {
+    const meal = meals.find(meal => meal.idMeal === idMeal)
+    if (favorites.includes(meal)) return
+    const updatedFavorites = [...favorites, meal]
+    setFavorites(updatedFavorites)
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites))
+
   }
 
-  function closeModal(){
+  function removeFromFavorite(idMeal) {
+    const removeFavorites = favorites.filter(meal => meal.idMeal !== idMeal)
+    setFavorites(removeFavorites)
+    localStorage.setItem('favorites', JSON.stringify(removeFavorites))
+  }
+
+
+  function selectMeal(mealId, favoriteMeal) {
+    let meal
+    if(favoriteMeal) meal = favorites.find(meal => meal.idMeal === mealId)
+    meal = meals.find(meal => meal.idMeal === mealId)
+    setSelectedMealID(meal)
+    setShowModal(true)
+  }
+
+  function closeModal() {
     setShowModal(false)
   }
 
@@ -52,23 +80,25 @@ export function AppProvider({ children }) {
 
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMeals(allMealsURL)
 
-  },[])
+  }, [])
 
   useEffect(() => {
-    if(!searchTerm) return 
+    if (!searchTerm) return
     fetchMeals(`${allMealsURL}${searchTerm}`)
-    
+
 
   }, [searchTerm])
 
-  
+
   return (
-    <MealsProvider.Provider value={{ 
+    <MealsProvider.Provider value={{
       meals, isLoading, setSearchTerm, fetchRandomMeals,
-      showModal, setShowModal,selectedMealID, selectMeal,closeModal }}>
+      showModal, setShowModal, selectedMealID, selectMeal, closeModal,
+      addToFavorites, removeFromFavorite, favorites
+    }}>
       {children}
     </MealsProvider.Provider>
   )

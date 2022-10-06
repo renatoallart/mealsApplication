@@ -205,6 +205,49 @@ ul {
 }
 
 /* Favorites */
+
+.favorites{
+  background: var(--black);
+  color: var(--white);
+  padding: 1rem 0;
+}
+
+.favorites-content{
+  width: var(--view-width);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.favorites-container{
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.favorite-item{
+  text-align: center;
+}
+
+.favorites-img{
+  width: 60px;
+  border-radius: 50%;
+  border: 5px solid var(--white);
+  cursor: pointer;
+}
+
+.remove-btn{
+  margin-top: .25rem;
+  background: transparent;
+  border: transparent;
+  color: var(--white);
+  cursor: pointer;
+  font-size: .75rem;
+  transition: var(--transition);
+}
+
+.remove-btn:hover{
+  color: var(--red-dark)
+}
+
 /* Meals */
 
 .section-center {
@@ -307,7 +350,7 @@ ul {
 
 
 .modal-content{
-  padding: 1rem,1.5rem;
+  padding: 1.5rem
 
 }
 

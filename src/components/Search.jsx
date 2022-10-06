@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+
+import { useState } from 'react'
 import { useGlobalContext } from '../AppProvider'
 
 export function Search() {
+
 
   const [searchInput, setSearchInput] = useState('')
   const {setSearchTerm, fetchRandomMeals} = useGlobalContext()
@@ -40,5 +42,5 @@ export function Search() {
     </header>
 
 
-  )
-}
+
+ 

@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 export const MealsProvider = createContext()
 
-const allMealsURL = 'https://themealdb.com/api/json/v1/1/search.php?s=a'
+const allMealsURL = 'https://themealdb.com/api/json/v1/1/search.php?s='
 const randomMealURL = 'https://themealdb.com/api/json/v1/1/random.php'
 
 export function useGlobalContext() {
@@ -17,11 +17,27 @@ export function useGlobalContext() {
 export function AppProvider({ children }) {
   const [meals, setMeals] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [selectedMealID, setSelectedMealID] = useState(null)
 
-  function searchMealByName(name){
-    meals.filter(meal => meal.strMeal === name)
+
+  function selectMeal(mealId, favoriteMeal){
+    console.log('clicked')
+    
+    setSelectedMealID(meals.find(meal => meal.idMeal === mealId))
+    setShowModal(true)
+  
+    
   }
 
+  function closeModal(){
+    setShowModal(false)
+  }
+
+  function fetchRandomMeals() {
+    fetchMeals(randomMealURL)
+  }
 
   async function fetchMeals(url) {
     setIsLoading(true)
@@ -36,14 +52,23 @@ export function AppProvider({ children }) {
 
   }
 
-  useEffect(() => {
+  useEffect(()=>{
     fetchMeals(allMealsURL)
 
-  }, [])
+  },[])
 
+  useEffect(() => {
+    if(!searchTerm) return 
+    fetchMeals(`${allMealsURL}${searchTerm}`)
+    
 
+  }, [searchTerm])
+
+  
   return (
-    <MealsProvider.Provider value={{ meals, isLoading }}>
+    <MealsProvider.Provider value={{ 
+      meals, isLoading, setSearchTerm, fetchRandomMeals,
+      showModal, setShowModal,selectedMealID, selectMeal,closeModal }}>
       {children}
     </MealsProvider.Provider>
   )

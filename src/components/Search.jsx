@@ -1,40 +1,46 @@
-import React from 'react'
+
 import { useState } from 'react'
 import { useGlobalContext } from '../AppProvider'
 
 export function Search() {
 
-  const [nameInput,setNameInput] = useState('')
-  const {meals} = useGlobalContext()
 
-  function handleChange(event){
-    const {value} = event.target
-    setNameInput(value)
+  const [searchInput, setSearchInput] = useState('')
+  const {setSearchTerm, fetchRandomMeals} = useGlobalContext()
+
+
+  function handleChange(event) {
+    const { value } = event.target
+    setSearchInput(value)
   }
 
-  function searchMealByName(name){
-    if(name == null) return 
-    return (
-      <div>
-        {meals.filter(meal => meal.strMeal === name).map(meal => <p>{meal.strMeal}</p> )}
-      </div>
-    )
+  function handleRandomMeal(){
+    setSearchInput('')
+    setSearchTerm('')
+    fetchRandomMeals()
   }
 
+  function handleSubmit(event) {
+    event.preventDefault()
+    if(searchInput) setSearchTerm(searchInput)
+
+  }
+ 
 
   return (
-    <header className="search-container">
-      <div>
-        {nameInput}
-      </div>
-      <input 
-        onChange={event => handleChange(event)}
-        name='nameInput'
-        value={nameInput}
-        className='form-input'
-        type="text" />
-      <button type='submit' onClick={()=> searchMealByName(nameInput)} className='btn'>Submit</button>
-      <button type='btn' className='btn btn-hipster'>Surprise me!</button>
+
+    <header className='search-container'>
+      <h3>{searchInput} </h3>
+      <form onSubmit={handleSubmit}>
+        <input className='form-input'
+          placeholder='type favorite meal'
+          onChange={event => handleChange(event)}
+          type="text" name='searchInput' value={searchInput} />
+        <button className='btn'>Search</button>
+        <button onClick={handleRandomMeal} className='btn btn-hipster' type='button'>Surprise me!</button>
+      </form>
     </header>
-  )
-}
+
+
+
+ 

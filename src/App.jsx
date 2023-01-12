@@ -5,13 +5,13 @@ import { Modal } from "./components/Modal";
 import { useGlobalContext } from "./AppProvider";
 
 export function App() {
-  const {showModal, favorites} = useGlobalContext()
+  const { showModal, favorites } = useGlobalContext();
   return (
     <main>
-      <Search/>
-      {favorites.length > 0 && <Favorites/>}
-      <Meals/>
-      {showModal && <Modal/>}
+      <Search />
+      {favorites.length > 0 && <Favorites />}
+      <Meals />
+      {showModal && <Modal />}
     </main>
-  )
+  );
 }
